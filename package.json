@@ -1,6 +1,6 @@
 {
   "name": "@aman_asmuei/akit",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "The portable capability layer for AI companions — give any AI tools that work everywhere",
   "type": "module",
   "bin": {
