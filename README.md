@@ -44,16 +44,26 @@ Same command. Same file. Different capabilities based on platform.
 ## The Ecosystem
 
 ```
-acore (who it IS) + amem (what it KNOWS) + akit (what it CAN DO)
+aman
+├── acore   →  identity     →  who your AI IS
+├── amem    →  memory       →  what your AI KNOWS
+├── akit    →  tools        →  what your AI CAN DO
+├── aflow   →  workflows    →  HOW your AI works
+├── arules  →  guardrails   →  what your AI WON'T do
+└── aeval   →  evaluation   →  how GOOD your AI is
 ```
 
 | Layer | Package | What it does |
 |:------|:--------|:-------------|
 | Identity | [acore](https://github.com/amanasmuei/acore) | Personality, values, relationship memory |
-| Memory | [amem](https://github.com/amanasmuei/amem) | Automated knowledge storage |
-| Tools | **akit** | Portable AI capabilities |
+| Memory | [amem](https://github.com/amanasmuei/amem) | Automated knowledge storage (MCP) |
+| Tools | **akit** | 15 portable AI tools (MCP + manual fallback) |
+| Workflows | [aflow](https://github.com/amanasmuei/aflow) | Reusable AI workflows (code review, bug fix, etc.) |
+| Guardrails | [arules](https://github.com/amanasmuei/arules) | Safety boundaries and permissions |
+| Evaluation | [aeval](https://github.com/amanasmuei/aeval) | Relationship tracking and session logging |
+| **Unified** | **[aman](https://github.com/amanasmuei/aman)** | **One command to set up everything** |
 
-Each works independently. Together they're a complete portable AI agent.
+Each works independently. `aman` is the front door.
 
 ---
 
