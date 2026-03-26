@@ -1,7 +1,7 @@
 export interface ToolEntry {
   name: string;
   description: string;
-  category: "search" | "development" | "data" | "communication" | "automation" | "memory";
+  category: "search" | "development" | "data" | "communication" | "automation" | "memory" | "documents";
   mcp: {
     package: string;
     command?: string;
@@ -207,6 +207,19 @@ export const REGISTRY: ToolEntry[] = [
     },
     manual: "Suggest docker commands for user to run",
     capabilities: ["containers", "images", "compose", "logs"],
+  },
+  {
+    name: "docling",
+    description: "Convert documents (PDF, DOCX, PPTX, XLSX, HTML, images) to markdown with AI-powered layout understanding",
+    category: "documents",
+    mcp: {
+      package: "docling-mcp",
+      command: "uvx",
+      args: ["docling-mcp"],
+    },
+    manual: "Ask user to convert with: docling convert <file> --to md, then paste the output",
+    capabilities: ["PDF reading", "DOCX conversion", "table extraction", "OCR", "PPTX", "XLSX"],
+    envHint: "Requires Python 3.10+. Install: pip install docling",
   },
 ];
 

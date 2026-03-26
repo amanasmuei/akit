@@ -23,7 +23,7 @@ describe("REGISTRY", () => {
   });
 
   it("every category is valid", () => {
-    const validCategories = ["search", "development", "data", "communication", "automation", "memory"];
+    const validCategories = ["search", "development", "data", "communication", "automation", "memory", "documents"];
     for (const tool of REGISTRY) {
       expect(validCategories).toContain(tool.category);
     }
