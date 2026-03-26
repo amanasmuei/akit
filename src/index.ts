@@ -26,7 +26,8 @@ program
 program
   .command("add <tool>")
   .description("Add a tool to your AI toolkit")
-  .action((tool) => addCommand(tool));
+  .option("--mcp <package>", "Custom MCP server npm package")
+  .action((tool, opts) => addCommand(tool, opts));
 
 program
   .command("remove <tool>")

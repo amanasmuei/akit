@@ -1,7 +1,7 @@
 import * as p from "@clack/prompts";
 import pc from "picocolors";
 import { findTool, REGISTRY } from "../lib/registry.js";
-import { detectPlatform, isMcpPlatform, removeMcpServer } from "../lib/platform.js";
+import { detectPlatform, isMcpPlatform, removeMcpServer, hasAmanAgent, removeMcpServerFromAmanAgent } from "../lib/platform.js";
 import { removeInstalledTool, isToolInstalled, loadInstalledTools, generateKitMd, writeKitMd } from "../lib/kit.js";
 
 export async function removeCommand(toolName: string): Promise<void> {
@@ -15,10 +15,16 @@ export async function removeCommand(toolName: string): Promise<void> {
 
   const platform = detectPlatform();
 
-  // Remove MCP config if applicable
+  // Remove MCP config from IDE platform
   if (isMcpPlatform(platform)) {
     removeMcpServer(platform, toolName);
-    p.log.success(`Removed MCP config for ${pc.bold(toolName)}`);
+    p.log.success(`Removed MCP config from ${pc.bold(platform)}`);
+  }
+
+  // Remove from aman-agent config
+  if (hasAmanAgent()) {
+    removeMcpServerFromAmanAgent(toolName);
+    p.log.success(`Removed MCP config from ${pc.bold("aman-agent")}`);
   }
 
   // Update installed tools and regenerate kit.md

@@ -32,6 +32,11 @@ export function isMcpPlatform(platform: Platform): boolean {
   return platform === "claude-code" || platform === "cursor" || platform === "windsurf";
 }
 
+export function hasAmanAgent(): boolean {
+  const configPath = path.join(os.homedir(), ".aman-agent", "config.json");
+  return fs.existsSync(configPath);
+}
+
 export interface McpServerConfig {
   command: string;
   args: string[];
@@ -51,6 +56,10 @@ export function getMcpConfigPath(platform: Platform): string | null {
   }
 }
 
+function getAmanAgentConfigPath(): string {
+  return path.join(os.homedir(), ".aman-agent", "config.json");
+}
+
 export function addMcpServer(
   platform: Platform,
   name: string,
@@ -68,24 +77,45 @@ export function addMcpServer(
     } catch { /* start fresh */ }
   }
 
-  // Different platforms use different structures
-  if (platform === "claude-code") {
-    const mcpServers = (existing.mcpServers ?? {}) as Record<string, unknown>;
-    mcpServers[name] = config;
-    existing.mcpServers = mcpServers;
-  } else {
-    // Cursor and Windsurf use { mcpServers: { ... } }
-    const mcpServers = (existing.mcpServers ?? {}) as Record<string, unknown>;
-    mcpServers[name] = config;
-    existing.mcpServers = mcpServers;
-  }
+  const mcpServers = (existing.mcpServers ?? {}) as Record<string, unknown>;
+  mcpServers[name] = config;
+  existing.mcpServers = mcpServers;
 
   fs.writeFileSync(configPath, JSON.stringify(existing, null, 2) + "\n", "utf-8");
+}
+
+export function addMcpServerToAmanAgent(
+  name: string,
+  config: McpServerConfig
+): void {
+  const configPath = getAmanAgentConfigPath();
+  if (!fs.existsSync(configPath)) return;
+
+  try {
+    const existing = JSON.parse(fs.readFileSync(configPath, "utf-8")) as Record<string, unknown>;
+    const mcpServers = (existing.mcpServers ?? {}) as Record<string, unknown>;
+    mcpServers[name] = config;
+    existing.mcpServers = mcpServers;
+    fs.writeFileSync(configPath, JSON.stringify(existing, null, 2) + "\n", "utf-8");
+  } catch { /* ignore */ }
 }
 
 export function removeMcpServer(platform: Platform, name: string): void {
   const configPath = getMcpConfigPath(platform);
   if (!configPath || !fs.existsSync(configPath)) return;
+
+  try {
+    const existing = JSON.parse(fs.readFileSync(configPath, "utf-8")) as Record<string, unknown>;
+    const mcpServers = (existing.mcpServers ?? {}) as Record<string, unknown>;
+    delete mcpServers[name];
+    existing.mcpServers = mcpServers;
+    fs.writeFileSync(configPath, JSON.stringify(existing, null, 2) + "\n", "utf-8");
+  } catch { /* ignore */ }
+}
+
+export function removeMcpServerFromAmanAgent(name: string): void {
+  const configPath = getAmanAgentConfigPath();
+  if (!fs.existsSync(configPath)) return;
 
   try {
     const existing = JSON.parse(fs.readFileSync(configPath, "utf-8")) as Record<string, unknown>;
