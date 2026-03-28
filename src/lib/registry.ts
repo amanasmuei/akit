@@ -169,6 +169,19 @@ export const REGISTRY: ToolEntry[] = [
     envHint: "Set NOTION_API_KEY from https://www.notion.so/my-integrations",
   },
   {
+    name: "social",
+    description: "Post to social media — Bluesky, X/Twitter, Threads",
+    category: "communication",
+    mcp: {
+      package: "@aman_asmuei/aman-social",
+      command: "npx",
+      args: ["-y", "@aman_asmuei/aman-social"],
+    },
+    manual: "Ask user to post content to social media manually",
+    capabilities: ["post to Bluesky", "post to X/Twitter", "post to Threads", "create threads", "check platform status"],
+    envHint: "Set BLUESKY_HANDLE + BLUESKY_APP_PASSWORD, and/or TWITTER_API_KEY + TWITTER_API_SECRET + TWITTER_ACCESS_TOKEN + TWITTER_ACCESS_SECRET, and/or THREADS_ACCESS_TOKEN",
+  },
+  {
     name: "linear",
     description: "Manage Linear issues, projects, and cycles",
     category: "development",
